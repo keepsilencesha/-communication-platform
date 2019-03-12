@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <link rel="stylesheet" href="/static/css/login/index.css">
+    <script src="/static/css/login/jquery-3.3.1.js"></script>
+    <style>
+        body {
+            background: url("/static/background/timg.jpg") center 0;
+            float: right;
+            padding: 80px;
+
+        }
+
+    </style>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    {% csrf_token %}
+    <div class="mail">
+        <div class="mail-head">
+
+
+            <div class="head-qr">
+                <span>嘿嘿</span>
+            </div>
+            <div class="head-usr">
+                <span>页面</span>
+            </div>
+        </div>
+        <div class="mail-body">
+            <div class="body-qr">
+                <div class="qr-text">
+                    <h2>如对本人有意<span>可扫描下方二维码</span></h2>
+                </div>
+                <div class="qr-animation">
+                    <img class="animation-qr" src="/static/css/login/二维码.jpg" alt="">
+                    <img class="animation-scan" src="/static/pic/peiqi.jpg" alt="">
+                </div>
+                <div class="qr-info"></div>
+            </div>
+            <div class="body-usr">
+                <form class="usr-form" action="">
+                    <div class="form-text">
+                        <div></div>
+                        <span class="span1">请输入用户名</span>
+                        <input type="text" id="name">
+                        <span class="span2"></span>
+                    </div>
+                    <div class="form-password">
+                        <div></div>
+                        <span class="span1">密码</span>
+                        <input type="password" id="password">
+                    </div>
+                    <div class="form-unload">
+                        <div class="unload-left">
+                            <div>
+                                <input type="checkbox" name="">
+                            </div>
+
+                            <label></label>
+                        </div>
+                        <div class="unload-right">
+
+                        </div>
+                    </div>
+                    <div class="form-btn">
+
+                        <input type="button" value="登录" class="btn login-btn " id="btn">
+
+                        <input type="button" value="注册" onclick="{location.href='/register/'}" style="float: right" class="regeist-btn">
+
+                    </div>
+                    <div class="login-info">
+
+                    </div>
+                    <div class="form-copy">
+                        <div class="error"></div>
+                    </div>
+
+                </form>
+                <div class="usr-info"></div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+<script src="/static/css/login/index.js">
+
+</script>
+
+</html>

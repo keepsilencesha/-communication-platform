@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/static/css/login/jquery-3.3.1.js"></script>
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.css">
+    <title>技术交流平台</title>
+    <style>
+        body {
+            background: url("/static/hero/2.png") no-repeat center 0;
+        }
+
+        .touxiang {
+            height: 50px;
+            width: 50px;
+            border-radius: 50% 50%;
+        }
+
+        .container-fluid {
+        {#position: fixed;#}
+        }
+
+        .article_bottom span {
+            margin-right: 5px;
+        }
+
+        .col-md-offset-3 {
+        {#background-color: white;#} box-shadow: 0 0 3px 0 #ccc;
+            background: url("/static/css/index/article.jpg");
+            background: transparent;
+
+
+        }
+
+    </style>
+</head>
+<body>
+<div class="head">
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">技术交流平台</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">文章 <span class="sr-only">(current)</span></a></li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if request.user.is_authenticated %}
+                        <li><img src="/media/{{ request.user.avatar }}" alt="" class="touxiang"></li>
+                        <li><a href="#">{{ request.user.username }}</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">个人中心 <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+
+                                <li><a href="/update_head/">修改头像</a></li>
+                                <li><a href="/backend/">个人站点</a></li>
+                                <li><a href="/{{ request.user.username }}/">个人文章</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/logout/">注销</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="/login/">登录</a></li>
+                        <li><a href="/register/">注册</a></li>
+                    {% endif %}
+
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-2">
+            <div class="panel panel-footer">
+                <div class="panel-heading">eeeeeeee</div>
+                <div class="panel-body">
+                    <p>请联系:199999999</p>
+                    年入60w
+                </div>
+            </div>
+            <div class="panel panel-success">
+                <div class="panel-heading">baidu</div>
+                <div class="panel-body">
+                    <a href="http://www.baidu.com">请点击</a>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-7">
+            <div class="row">
+                <div class=" col-md-offset-3">
+                    <table class="middle1">
+                        <tbody>
+                        {% for article in current_page %}
+                            <div>
+                                <h4>
+                                    <a href="/{{ article.blog.userinfo.username }}/article/{{ article.pk }}">{{ article.title }}</a>
+                                </h4>
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#">
+                                            {# avatar/lhf.jpg     ----/media/#}
+                                            <img class="media-object" src="/media/{{ article.blog.userinfo.avatar }}"
+                                                 height="70" width="70">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+
+                                        {{ article.desc }}
+                                    </div>
+                                </div>
+                                <div style="margin-top: 10px " class="article_bottom">
+                                    <span><a
+                                            href="/{{ article.blog.userinfo.username }}">{{ article.blog.userinfo.username }}</a></span>
+                                    <span>发布于 {{ article.create_time|date:'Y-m-d H:i:s' }}</span>
+                                    {#反向查询,一对多,按表名小写_set#}
+                                    {#                        <span class="glyphicon glyphicon-comment"><a href="">评论({{ article.commit_num }})</a></span>#}
+                                    <span><i class="fa fa-comment" aria-hidden="true"><a
+                                            href="">评论({{ article.commit_num }})</a></i></span>
+
+                                    {#                        <span class="glyphicon glyphicon-comment"><a href="">评论({{ article.commit_num }})</a></span>#}
+                                    <span class="glyphicon glyphicon-thumbs-up"><a href="">点赞({{ article.up_num }})</a></span>
+                                </div>
+                                <hr>
+                            </div>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            {% if current_page.has_previous %}
+                                <li>
+
+                                    <a href="/index/?page={{ current_page.previous_page_number }}"
+                                       aria-label="Previous">
+                                        <span aria-hidden="true">上一页</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="disabled">
+                                    <a href="" aria-label="Previous">
+                                        <span aria-hidden="true">上一页</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% for foo in page_range %}
+                                {% if current_page_num == foo %}
+
+                                    <li class="active"><a href="/index/?page={{ foo }}">{{ foo }}</a></li>
+                                {% else %}
+                                    <li><a href="/index/?page={{ foo }}">{{ foo }}</a></li>
+                                {% endif %}
+
+                            {% endfor %}
+
+
+
+                            {% if current_page.has_next %}
+                                <li>
+
+                                    <a href="/index/?page={{ current_page.next_page_number }}" aria-label="Next">
+                                        <span aria-hidden="true">下一页</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="disabled">
+                                    <a href="" aria-label="Next">
+                                        <span aria-hidden="true">下一页</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

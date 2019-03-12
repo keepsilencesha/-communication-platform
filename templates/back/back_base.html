@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    {#   bootstrap.js 是基于jquery的,所以要用它,必须先导入jquery .并且在它上面导入#}
+    <script src="/static/css/login/jquery-3.3.1.js"></script>
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <title>后台管理</title>
+    <style>
+        .head {
+            height: 60px;
+            background: #3e8f3e;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="head">
+    <p><a href="/index/">首页</a></p>
+    <p>后台管理</p>
+</div>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-3">
+
+
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                               aria-expanded="true" aria-controls="collapseOne">
+                                操作
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
+                         aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <a href="/add_article/">添加文章</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-9">
+            <div>
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+                                                              data-toggle="tab">文章</a></li>
+
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        {% block home %}
+                        {% endblock %}
+
+
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="profile">随笔页面</div>
+                    <div role="tabpanel" class="tab-pane" id="messages">日志页面</div>
+                    <div role="tabpanel" class="tab-pane" id="settings">链接页面</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</body>
+</html>

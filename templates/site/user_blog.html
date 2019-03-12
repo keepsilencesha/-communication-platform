@@ -1,0 +1,35 @@
+{% extends 'site/base.html' %}
+{% block content %}
+
+
+    {#通过站点查询所有文章,反向查询,按表名小写_set.all#}
+    {% for article in article_list %}
+        {#lqz/article/1#}
+        <h4><a href="/{{ username }}/article/{{ article.pk }}">{{ article.title }}</a></h4>
+
+        <div>
+
+            {{ article.desc }}
+        </div>
+
+        <div class="clearfix">
+            <div style="margin-top: 10px " class="article_bottom small pull-right">
+
+
+                <span>posted @ {{ article.create_time|date:'Y-m-d H:i:s' }}</span>
+                {#反向查询,一对多,按表名小写_set#}
+                {#                        <span class="glyphicon glyphicon-comment"><a href="">评论({{ article.commit_num }})</a></span>#}
+
+                <span>{{ article.blog.userinfo.username }}</span>
+                <span><i class="fa fa-comment" aria-hidden="true"><a
+                        href="">评论({{ article.commit_num }})</a></i></span>
+
+                {#                        <span class="glyphicon glyphicon-comment"><a href="">评论({{ article.commit_num }})</a></span>#}
+                <span class="glyphicon glyphicon-thumbs-up"><a href="">点赞({{ article.up_num }})</a></span>
+                <span><a href="/update_article/{{ article.nid }}">编辑</a></span>
+            </div>
+        </div>
+        <hr>
+    {% endfor %}
+
+{% endblock %}

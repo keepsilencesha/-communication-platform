@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/static/css/login/jquery-3.3.1.js"></script>
+    <title>注册</title>
+    <style>
+        #my_picture {
+            display: none;
+        }
+
+        body {
+            background: url("/static/hero/34.png") center 0;
+
+
+        }
+
+
+    </style>
+</head>
+<body class="jumbotron">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <form action="" method="post" id="form">
+                <div>
+
+                    {% csrf_token %}
+                    {% for i in my_forms %}
+                        <div class="form-group">
+                            <label for="{{ i.auth_id }}"> {{ i.label }}</label>
+                            {{ i }}<span class="error  pull-right" style="..."></span>
+                        </div>
+                    {% endfor %}
+
+                    <div class="form-group">
+                        <label for="my_picture">头像
+                            <img src="/static/hero/1.jpg" id="img_picture" alt="" height="100" width="100">
+
+                        </label>
+                        <input type="file" id="my_picture">
+                    </div>
+                     <div class="form-group">
+                         <label for=""><span>站点标题名:</span><input type="text" id="blog_title"></label>
+                         <label for=""><span>站点名:</span><input type="text" id="site_name"></label>
+                         <label for=""><span>站点样式:</span><input type="text" id="theme"></label>
+                     </div>
+                </div>
+                <input type="button" id="btn" value="注册" class="btn btn-primary ">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+//    $("#id_username").blur(function () {
+      //  $.ajax({
+            //url: '/check_name/',
+            //type: 'post',
+            //data: {'id_username': $("#id_username").val(), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            //success: function (data) {
+                //if (data.status == 100) {
+                //    $("#id_username").next().html(data.msg).parent().addClass('has-error')
+               // }
+            //}
+
+
+        //})
+ $("#id_username").blur(function () {
+        $.ajax({
+            url:'/check_name/',
+            type:'post',
+
+            data:{name:$(this).val(),'csrfmiddlewaretoken':'{{ csrf_token }}'},
+            success:function (data) {
+                console.log(data)
+                if(data.status==100){
+                    $('#id_username').next().html(data.msg).parent().addClass('has-error')
+                }
+            }
+
+        })
+    })
+        $("#my_picture").change(function () {
+
+            var file_obj = $("#my_picture")[0].files[0]
+
+            var filereader = new FileReader()
+            filereader.readAsDataURL(file_obj)
+            filereader.onload = function () {
+                $("#img_picture").attr('src', filereader.result)
+
+            }
+        })
+        $("#btn").click(function () {
+            var formdata = new FormData()
+            var arr = $("#form").serializeArray()
+            $.each(arr, function (key, v) {
+                formdata.append(v.name, v.value)
+            })
+            formdata.append('my_picture', $('#my_picture')[0].files[0])
+            formdata.append('blog_title',$('#blog_title').val())
+            formdata.append('site_name',$('#site_name').val())
+            formdata.append('theme',$('#theme').val())
+            $.ajax({
+                url: '/register/',
+                type: 'post',
+                processData: false,
+                contentType: false,
+                data: formdata,
+                success: function (data) {
+
+                    if (data.status) {
+                        location.href = '/login/'
+                    } else {
+                        //$(".form-group").removeClass('has-error')
+                        //$(".error").html("")
+                        $.each(data.msg, function (i, val) {
+                            if (i == '__all__') {
+
+                                $('#id_re_password').next().html(val[0])
+                            }
+                            else {
+                                console.log('3333')
+                                $('#id_' + i).next().html(val[0]).parent().addClass('has-error')
+                            }
+                        })
+                        setTimeout(function () {
+                            $(".form-group").removeClass('has-error')
+                            $(".error").html("")
+                        }, 3000)
+                    }
+
+                }
+            })
+        })
+</script>
+</html>
